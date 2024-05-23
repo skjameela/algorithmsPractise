@@ -1,46 +1,51 @@
 package org.example;
 
-public class QuickSort {
-    public static int partition(int arr[],int low,int high)
-    {
-        int pivot=arr[high];
-        int i=low-1;
-        for(int j=low;j<high;j++)
-        {
-           if(arr[j]<pivot)
-           {
-               i++;
-               int temp=arr[i];
-               arr[i]=arr[j];
-               arr[j]=temp;
-           }
+public class MergeSortAlgorithm {
+
+    public static void merge(int[] array, int start, int mid, int end) {
+        int[] tempArray = new int[end - start + 1];
+        int leftIndex = start;
+        int rightIndex = mid + 1;
+        int tempIndex = 0;
+
+        while (leftIndex <= mid && rightIndex <= end) {
+            if (array[leftIndex] <= array[rightIndex]) {
+                tempArray[tempIndex++] = array[leftIndex++];
+            } else {
+                tempArray[tempIndex++] = array[rightIndex++];
+            }
         }
 
-        i++;
-        int temp=arr[i];
-        arr[i]=pivot;
-        arr[high]=temp;
-        return i;
-    }
-    public static void quickSort(int arr[],int low,int high)
-    {
-        if(low<high)
-        {
-            int pidx=partition(arr,low,high);
-            quickSort(arr,low,pidx-1);
-            quickSort(arr,pidx+1,high);
+        while (leftIndex <= mid) {
+            tempArray[tempIndex++] = array[leftIndex++];
+        }
+
+        while (rightIndex <= end) {
+            tempArray[tempIndex++] = array[rightIndex++];
+        }
+
+        for (int i = 0, j = start; i < tempArray.length; i++, j++) {
+            array[j] = tempArray[i];
         }
     }
-public static void main(String[] args)
-{
-    int [] arr={6,3,9,5,2,8};
-    int n=arr.length;
-    quickSort(arr,0,n-1);
-    for(int i=0;i<arr.length;i++)
-    {
-        System.out.print(arr[i]+" ");
-    }
-    System.out.println();
-}
 
+    public static void sort(int[] array, int start, int end) {
+        if (start >= end) {
+            return;
+        }
+        int mid = start + (end - start) / 2;
+        sort(array, start, mid);
+        sort(array, mid + 1, end);
+        merge(array, start, mid, end);
+    }
+
+    public static void main(String[] args) {
+        int[] array = {4, 10, 1, 5, 8, 2, 6};
+        int n = array.length;
+        sort(array, 0, n - 1);
+        for (int i = 0; i < n; i++) {
+            System.out.print(array[i] + " ");
+        }
+        System.out.println();
+    }
 }
